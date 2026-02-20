@@ -76,18 +76,6 @@ function App() {
     ? PRODUCTS_DATA 
     : PRODUCTS_DATA.filter(p => p.category === selectedCategory);
 
-  const handleContactSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-
-    // Simulate form submission
-    setTimeout(() => {
-      toast.success("Thank you! We'll get back to you soon via email.");
-      setFormData({ name: "", email: "", message: "" });
-      setSubmitting(false);
-    }, 1000);
-  };
-
   return (
     <div className="app-container">
       {/* Navigation */}
@@ -239,50 +227,6 @@ function App() {
           </div>
 
           <div className="contact-content">
-            <form onSubmit={handleContactSubmit} className="contact-form" data-testid="contact-form">
-              <div className="form-group">
-                <Input
-                  type="text"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="form-input"
-                  data-testid="contact-name-input"
-                />
-              </div>
-              <div className="form-group">
-                <Input
-                  type="email"
-                  placeholder="Your Email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="form-input"
-                  data-testid="contact-email-input"
-                />
-              </div>
-              <div className="form-group">
-                <Textarea
-                  placeholder="Your Message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  rows={5}
-                  className="form-input"
-                  data-testid="contact-message-input"
-                />
-              </div>
-              <Button 
-                type="submit" 
-                disabled={submitting} 
-                className="submit-btn"
-                data-testid="contact-submit-btn"
-              >
-                {submitting ? "Sending..." : "Send Message"}
-              </Button>
-            </form>
-
             <div className="contact-info">
               <div className="info-card">
                 <h3 className="info-title">Connect With Us</h3>
