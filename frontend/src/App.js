@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "@/App.css";
 import { Instagram, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,75 +6,39 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-// Static product data
-const PRODUCTS_DATA = [
-  {
-    id: "1",
-    name: "Velvet Rose Bow",
-    description: "Elegant velvet bow with rose gold clip. Perfect for special occasions.",
-    price: 299.00,
-    image_url: "https://images.pexels.com/photos/30056547/pexels-photo-30056547.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    category: "bows",
-    featured: true
-  },
-  {
-    id: "2",
-    name: "Pearl Flower Clip",
-    description: "Delicate pearl-embellished flower clip. Adds elegance to any hairstyle.",
-    price: 249.00,
-    image_url: "https://images.pexels.com/photos/20588093/pexels-photo-20588093.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    category: "clips",
-    featured: true
-  },
-  {
-    id: "3",
-    name: "Satin Hair Band",
-    description: "Soft satin headband with elegant knot detail. Comfortable all-day wear.",
-    price: 199.00,
-    image_url: "https://images.unsplash.com/photo-1748785944341-8ca18262bd34?crop=entropy&cs=srgb&fm=jpg&q=85",
-    category: "bands",
-    featured: false
-  },
-  {
-    id: "4",
-    name: "Crystal Bow Set",
-    description: "Set of 3 crystal-adorned mini bows. Perfect for braids and updos.",
-    price: 349.00,
-    image_url: "https://images.pexels.com/photos/19590837/pexels-photo-19590837.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    category: "bows",
-    featured: false
-  },
-  {
-    id: "5",
-    name: "Metallic Hair Clips",
-    description: "Set of 5 metallic clips in assorted colors. Modern and versatile.",
-    price: 279.00,
-    image_url: "https://images.pexels.com/photos/33269485/pexels-photo-33269485.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    category: "clips",
-    featured: true
-  },
-  {
-    id: "6",
-    name: "Organza Scrunchie Set",
-    description: "Delicate organza scrunchies in pastel shades. Gentle on hair.",
-    price: 229.00,
-    image_url: "https://images.unsplash.com/photo-1743664594400-aac1aa57e37a?crop=entropy&cs=srgb&fm=jpg&q=85",
-    category: "bands",
-    featured: false
-  }
-];
-
 function App() {
+  const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
 
-  const categories = ["all", "bands", "bows", "clips"];
+  useEffect(() => {
+    fetch('../assets/products.csv')
+      .then(res => res.text())
+      .then(csv => {
+        const lines = csv.trim().split('\n');
+        const data = lines.slice(1).map((line, idx) => {
+          const [category, name, description, price, featured, image] = line.split(',').map(s => s.trim());
+          return {
+            id: String(idx + 1),
+            category,
+            name,
+            description,
+            price: parseFloat(price),
+            featured: featured === 'true',
+            image_url: image.startsWith('http') ? image : `../assets/images/${image}`
+          };
+        });
+        setProducts(data);
+      });
+  }, []);
+
+  const categories = ["all", ...new Set(products.map(p => p.category))];
 
   const filteredProducts = selectedCategory === "all" 
-    ? PRODUCTS_DATA 
-    : PRODUCTS_DATA.filter(p => p.category === selectedCategory);
+    ? products 
+    : products.filter(p => p.category === selectedCategory);
 
   return (
     <div className="app-container">
