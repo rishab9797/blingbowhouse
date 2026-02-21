@@ -14,7 +14,7 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetch('../assets/products.csv')
+    fetch('/products.csv')
       .then(res => res.text())
       .then(csv => {
         const lines = csv.trim().split('\n');
@@ -27,7 +27,7 @@ function App() {
             description,
             price: parseFloat(price),
             featured: featured === 'true',
-            image_url: image.startsWith('http') ? image : `../assets/images/${image}`
+            image_url: image.startsWith('http') ? image : `/images/${image}`
           };
         });
         setProducts(data);
