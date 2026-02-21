@@ -98,7 +98,7 @@ function App() {
           </div>
           <div className="hero-image" data-testid="hero-image">
             <img 
-              src="https://images.unsplash.com/photo-1708121222833-ab69133b14bc?crop=entropy&cs=srgb&fm=jpg&q=85" 
+              src="/images/hero/hero.jpeg" 
               alt="Hair accessories collection"
             />
           </div>
@@ -159,7 +159,7 @@ function App() {
         <div className="about-container">
           <div className="about-image" data-testid="about-image">
             <img 
-              src="https://images.unsplash.com/photo-1762803841119-7adc4b402370?crop=entropy&cs=srgb&fm=jpg&q=85" 
+              src="/images/hero/about.jpeg" 
               alt="Prithi Jain"
             />
           </div>
